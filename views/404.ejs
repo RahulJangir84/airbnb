@@ -1,0 +1,25 @@
+<%- include('partials/head', {pageTitle:'404 Error'})%>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- <header class="bg-red-400 shadow-md">
+        <div class="p-4 px-7 flex items-center text-white">
+            <a class="mr-4 hover:text-red-100 transition-colors" href="/host/add-home">Add home</a>
+            <a class="hover:text-red-100 transition-colors" href="/">Back To home</a>
+        </div>
+    </header> -->
+    <%- include('partials/nav', {currentPage: '404'})%>
+    <main class="container mx-auto px-4 py-8">
+        
+        <div class="flex justify-center items-center py-10 my-10 shadow-xl max-w-md mx-auto rounded-lg flex-col bg-white">
+            <h1 class="text-8xl text-red-500 font-bold mb-4">404</h1>
+            <h2 class="text-2xl text-gray-600 font-semibold mb-6">
+                Oops! Page not found
+            </h2>
+            <p class="text-gray-500 mb-6 text-center px-6">The page you are looking for doesn't exist or has been moved.</p>
+            <a href="/index" class="bg-red-400 text-white px-6 py-2 rounded-md hover:bg-red-500 transition-colors">
+                Return to Home
+            </a>
+        </div>
+    </main>
+</body>
+</html>
