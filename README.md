@@ -20,7 +20,7 @@ A Node.js-based Airbnb clone application that allows users to browse, book, and 
 
 1. Clone the repository:
 ```bash
-git clone <your-repository-url>
+git clone <(https://github.com/rahuljangir84/airbnb.git)>
 cd airbnb4
 ```
 
