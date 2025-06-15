@@ -1,20 +1,21 @@
-const { register } = require('module');
-const favourite = require('../models/favourite');
+// const { register } = require('module');
 const Home = require('../models/home');
-const path = require('path');
-const mongodb = require('mongodb');
-const getDb = require('../utils/databaseUtil');
+const User = require('../models/user');
+
+
 
 
 //upper three for hostrouter
 
 
 const getHomes = (req,res,next)=>{ 
-    Home.fetchAll().then(registeredHome=> {
+    Home.find().then(registeredHome=> {
         res.render('store/home-list',{
             registeredHome:registeredHome,
             pageTitle:'Home list',
-            currentPage:'home'
+            currentPage:'home',
+            isLoggedIn:req.isLoggedIn,
+            user:req.session.user,
         })
 });
 }
@@ -22,42 +23,46 @@ const getHomes = (req,res,next)=>{
 const getBooking = (req,res,next)=>{
     res.render('store/booking',{
         pageTitle:'Booking',
-        currentPage:'booking'
+        currentPage:'booking',
+        isLoggedIn:req.isLoggedIn,
+        user:req.session.user,
     })
 
 }
 
 
-const getFavourite = (req,res,next)=>{
-    favourite.getFavourite(Favourites=>{ 
-        Home.fetchAll().then(registeredHome=> { //fir saare home bhi fetch kar liye
-            const favouriteHomes =registeredHome.filter(Home=> Favourites.includes(Home._id)); //favouritesHomes ki new list ban gyi jismai id match ho rhi hai vahi rahenge
-                res.render('store/favourite-list', {
-                    favouriteHomes: favouriteHomes,
-                    pageTitle: 'Favourite List',
-                    currentPage: 'favourites'
-            });
-            });
+const getFavourite = async (req,res,next)=>{
+    const userId=req.session.user._id;
+    const Founduser = await User.findById(userId).populate('favourite');       
+    res.render('store/favourite-list', {
+        favouriteHomes: Founduser.favourite,
+        pageTitle: 'Favourite List',
+        currentPage: 'favourites',
+        isLoggedIn:req.isLoggedIn,
+        user:req.session.user,
     });
 }
 
-    const postAddToFavourite=(req,res,next)=>{
-        const newFavourite = new favourite(req.body.id);
-        newFavourite.save().then(result=>{
-            console.log(result);
-        }).catch(err=>{
-            console.log(err);
-        }).finally(()=>{
-            res.redirect('favourite-list');
-        })
+    const postAddToFavourite=async(req,res,next)=>{
+        const homeId=req.body.id;
+        const userId = req.session.user._id;
+        const user = await User.findById(userId);
+        if(!user.favourite.includes(homeId)){
+        user.favourite.push(homeId);
+        await user.save();
+        }
+        res.redirect("/favourite-list");
+       
     };
 
 const getIndex = (req,res,next)=>{ 
-    Home.fetchAll().then(registeredHome=> {
+    Home.find().then(registeredHome=> {
         res.render('store/index',{
             registeredHome:registeredHome,
             pageTitle:'Airbnb home',
-            currentPage:'index'
+            currentPage:'index',
+            isLoggedIn:req.isLoggedIn,
+            user:req.session.user,
         })
 });
 }
@@ -72,19 +77,25 @@ const getHomeDetails = (req,res,next)=>{
         res.render('store/home-details',{
             home:home,
             pageTitle:'Home Details',
-            currentPage:'homeDetails'
+            currentPage:'homeDetails',
+            isLoggedIn:req.isLoggedIn,
+            user:req.session.user,
         
         })
     }
     })
 }
 
-const deleteHome = (req,res,next)=>{
-    
-    const homeId = req.params.id;
-    favourite.deleteHome(homeId);
+const deleteHome = async (req, res, next) => {
+    const homeId=req.params.id;
+    const userId=req.session.user._id;
+    const user=await User.findById(userId);
+    if(user.favourite.includes(homeId)){
+        user.favourite=user.favourite.filter(fav=>fav!=homeId);
+        await user.save();
+    }
     res.redirect('/favourite-list');
-}
+};
 
 
 
@@ -99,8 +110,3 @@ module.exports = {
     postAddToFavourite,
     deleteHome
 }
-
-// exports. postaddHome = postaddHome;
-// exports.getaddHome = getaddHome;
-// exports.getHomes = getHomes;
-// exports.registeredHomes = registeredHomes;

@@ -1,19 +1,8 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airbnb</title>
-    <link rel="stylesheet" href="/output.css">   inko comment isleye koya kyuki yeh chize har page pe use ho rhi hai toh react jaise hamne component like partials bana diye hai -->
+
 <%- include('../partials/head', {pageTitle: 'Airbnb Home'}) %>
 </head>
 <body class="min-h-screen bg-gray-50">
-    <!-- <header class="bg-red-400 shadow-md">
-        <div class="p-4 px-7 flex items-center text-white">
-            <a class="mr-4 hover:text-red-100 transition-colors" href="/host/add-home">Add home</a>
-            <a class="hover:text-red-100 transition-colors" href="/">Back To home</a>
-        </div>
-    </header> -->
+    
     <%- include('../partials/nav') %>
     <main class="container mx-auto px-4 py-8">
         <div class="bg-white rounded-lg shadow-xl p-6 my-7">
@@ -25,8 +14,8 @@
                 <div class="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
                     <!--Image section-->
                     <div class="relative h-48 overflow-hidden rounded-t-lg">
-                        <% if (home.photoUrl) { %>
-                            <img src="<%= home.photoUrl %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
+                        <% if (home.photo) { %>
+                            <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
                         <% } else { %>
                             <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                                 <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

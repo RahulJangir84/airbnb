@@ -1,55 +1,24 @@
-//core modules hai toh directly access kar skte hai 
-const path= require('path');
-const fs=require('fs');
+const { default: mongoose } = require("mongoose");
 
-const {getDb} = require('../utils/databaseUtil');
-const {ObjectId}  =require('mongodb');
+const homeSchema = new mongoose.Schema({
+    houseName:{type: String, required: true},
+    location:{type: String,required:true},
+    pricePerNight:{type: Number,required:true},
+    rating:{type:Number,required:true},
+    photo:String,
+    description:String,
+});
 
-//
-const rootDir = require('../utils/pathutil');
 
-//fake database
+//prehook hai jismai agar koi ghar delete karta hai toh favourite bhi delete ho jayega
+//with the help of findOneAndDelete
 
-class Home {
-    constructor(houseName, location, pricePerNight, rating, photoUrl, description,_id){
-        this.houseName = houseName;
-        this.location = location;
-        this.pricePerNight = pricePerNight;
-        this.rating = rating;
-        this.photoUrl = photoUrl;
-        this.description = description;
-        if(_id){
-        this._id = _id;
-        } 
-    }
 
-    save(){
-        const db = getDb();
-        if(this.id){ //update
-            return db.collection('homes')
-            .updateOne(
-                {_id:new ObjectId(String(this.id))},
-                {$set:this}
-            );
-        }
-        else{ //insert
-            return db.collection('homes').insertOne(this);
-        }
-    }
-    
-    static fetchAll(){
-      const db = getDb();
-     return db.collection('homes').find().toArray(); 
-    }
-    static findById(homeId){
-        // console.log("homeId",homeId);
-        const db = getDb();
-        return db.collection('homes').find({_id: new ObjectId(String(homeId))}).next(); 
-          }
-    static deleteById(homeId){
-        const db = getDb();
-        return db.collection('homes').deleteOne({_id: new ObjectId(String(homeId))});
-}
-}
+// homeSchema.pre('findOneAndDelete',async function(next) {
+//     const homeId=this.getQuery()["_id"];
+//     await favourite.deleteMany({homeId:homeId});
+//     next();
+// })
 
-module.exports=Home;
+module.exports=mongoose.model("Home",homeSchema); 
+
