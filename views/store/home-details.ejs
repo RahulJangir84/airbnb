@@ -1,41 +1,47 @@
 <%- include('../partials/head') %>
 </head>
-<body>
+<body class="bg-gray-100">
     <%- include('../partials/nav') %>
-    <main class="container mx-auto px-4 py-8">
-        <div class="max-w-3xl mx-auto">
-            <!-- Breadcrumb Navigation -->
-            <div class="mb-6 flex items-center text-sm text-gray-500">
-                <a href="/homes" class="hover:text-red-500">Homes ></a>
-                <span class="mx-2"></span>
-                <span class="text-gray-700 font-medium"><%= home.houseName %></span>
+
+    <main class="container mx-auto px-4 py-10">
+        <div class="max-w-4xl mx-auto">
+            <!-- Breadcrumb -->
+            <div class="mb-6 flex items-center text-gray-500">
+                <a 
+                    href="/homes" 
+                    class="hover:text-red-500 transition duration-200 font-semibold">
+                    Homes
+                </a>
+                <span class="mx-2 text-gray-400">/</span>
+                <span class="text-gray-800 font-semibold"><%= home.houseName %></span>
             </div>
 
-            <!-- Main Content Card -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Main Card -->
+            <div class="bg-gray-50 rounded-2xl shadow-lg overflow-hidden">
+                
                 <!-- Image Section -->
                 <div class="relative h-96 overflow-hidden">
                     <% if (home.photo) { %>
-                        <img src="<%= home.photo %>" alt="<%= home.houseName %>" class="w-full h-full object-cover">
+                        <img src="<%= home.photo %>" alt="<%= home.houseName %>" 
+                             class="w-full h-full object-cover transition transform duration-500 hover:scale-105">
                     <% } else { %>
                         <div class="w-full h-full bg-gray-200 flex items-center justify-center">
                             <svg class="w-24 h-24 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 22V12h6v10"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 22V12h6v10" />
                             </svg>
                         </div>
                     <% } %>
-                    
-                    
-                    <div class="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full font-semibold shadow-lg flex items-center">
+
+                    <!-- Rating -->
+                    <div class="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full font-semibold shadow-md flex items-center">
                         <span class="mr-1">★</span>
-                        <span><%= home.rating %>/5</span>
+                        <span><%= home.rating %> / 5</span>
                     </div>
 
-                    
-                    <div class="absolute bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold shadow-lg text-lg">
-                        <span><%= home.pricePerNight %>  </span>
-                        <span class="text-sm font-normal">per night</span>
+                    <!-- Per Night -->
+                    <div class="absolute bottom-4 right-4 bg-red-500 text-gray-50 px-4 py-2 rounded-full font-semibold shadow-md">
+                        ₹<%= home.pricePerNight %> <span class="text-sm font-normal ml-1">per night</span>
                     </div>
                 </div>
 
@@ -44,112 +50,72 @@
                     <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
                         <!-- Left Column: Details -->
                         <div class="flex-1">
-                            <!-- Title -->
-                            <h1 class="text-3xl font-bold text-gray-800 mb-3"><%= home.houseName %></h1>
-                            
-                            <!-- Location -->
-                            <div class="flex items-center text-gray-600 mb-6">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <h1 class="text-3xl font-semibold text-gray-900 mb-2"><%= home.houseName %></h1>
+
+                            <div class="flex items-center text-gray-500 mb-6">
+                                <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                <p class="text-lg"><%= home.location %></p>
+                                <span class="text-lg"><%= home.location %></span>
                             </div>
-                            
-                            <!-- Divider -->
+
                             <div class="border-t border-gray-200 my-6"></div>
-                            
-                            <!-- Description Section -->
+
                             <div class="mb-8">
-                                <h2 class="text-xl font-semibold text-gray-800 mb-4">Description</h2>
+                                <h2 class="text-2xl font-semibold text-gray-900 mb-4">About this Home</h2>
                                 <p class="text-gray-600 leading-relaxed">
-                                    <%= home.description || "No description provided for this property." %>
+                                   <%= home.description || "No description provided for this property." %>
                                 </p>
                             </div>
-                            
-                            <!-- Features Section -->
+
                             <div>
-                                <h2 class="text-xl font-semibold text-gray-800 mb-4">Property Highlights</h2>
-                                <ul class="grid grid-cols-2 gap-3">
-                                    <li class="flex items-center text-gray-600">
-                                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span>Free WiFi</span>
-                                    </li>
-                                    <li class="flex items-center text-gray-600">
-                                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span>Air Conditioning</span>
-                                    </li>
-                                    <li class="flex items-center text-gray-600">
-                                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span>Parking</span>
-                                    </li>
-                                    <li class="flex items-center text-gray-600">
-                                        <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span>Kitchen</span>
-                                    </li>
+                                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Property Highlights</h2>
+                                <ul class="grid grid-cols-2 gap-4">
+                                   <li class="flex items-center text-gray-600">
+                                      <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                      </svg> Free WiFi
+                                   </li>
+                                   <li class="flex items-center text-gray-600">
+                                      <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                      </svg> Air Conditioning
+                                   </li>
+                                   <li class="flex items-center text-gray-600">
+                                      <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                      </svg> Parking
+                                   </li>
+                                   <li class="flex items-center text-gray-600">
+                                      <svg class="w-5 h-5 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                      </svg> Kitchen
+                                   </li>
                                 </ul>
                             </div>
                         </div>
-                        
-                        <!-- Right Column: Booking Section -->
-                        <!-- <div class="w-full md:w-80 bg-gray-50 rounded-lg p-6 shadow-md">
-                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Book this place</h3>
-                            
-                            
-                            <div class="flex items-baseline mb-6">
-                                <span class="text-2xl font-bold text-gray-900">$<%= home.pricePerNight %></span>
-                                <span class="text-gray-600 ml-2">per night</span>
-                            </div>
-                            
-                            
-                            <div class="space-y-4 mb-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Check-in</label>
-                                    <input type="date" class="w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Check-out</label>
-                                    <input type="date" class="w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Guests</label>
-                                    <select class="w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200">
-                                        <option>1 guest</option>
-                                        <option>2 guests</option>
-                                        <option>3 guests</option>
-                                        <option>4 guests</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            
-                             <button class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 rounded-lg shadow-md transition duration-200 ease-in-out">
-                                Book Now
-                            </button> -->
+
+                        <!-- Right Column -->
                         <div>
                             <%- include('../partials/favouriteButton') %>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Back Button -->
-            <div class="mt-8 pb-10 ml-6">
-                <a href="/homes" class="inline-flex items-center text-red-500 hover:text-red-700 font-medium">
+            <div class="mt-8 ml-6">
+                <a 
+                   href="/homes" 
+                   class="inline-flex items-center text-red-500 hover:text-red-700 font-semibold transition">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                     Back to All Homes
                 </a>
             </div>
+
         </div>
     </main>
 </body>

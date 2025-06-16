@@ -50,21 +50,38 @@ app.use((req,res,next)=>{
     console.log(req.url,req.method);
     next();
 })
+app.use(express.json()); // Add middleware to parse JSON requests
 
 //this defined where uploaded files will be stored and how they will be named 
 const storage=multer.diskStorage({
     destination:(req,file,cb)=>{
-        cb(null,'images/');//files will be saved in images directory
+        cb(null,'images');//files will be saved in images directory
+
     },
     filename:(req,file,cb)=>{
-        cb(null,new Date().toISOString()+ '-' + file.originalname);
+        cb(null,Date.now()+ '-' + file.originalname);
     }
 });
 
+const fileFilter = (req,file,cb)=>{
+    if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'){
+        cb(null,true);
+    }
+    else{
+        cb(null,false);
+    }
+}
+
+const multerOptions={
+    storage: storage,
+    fileFilter
+}
 app.use(express.urlencoded({extended: true})); //yeh middleware hai jo msgs ko parse karega jo form se aya hai
+app.use(multer(multerOptions).single('photo'));
 app.use(express.static(path.join(rootDir,'public'))); 
-app.use(express.json()); // Add middleware to parse JSON requests
-app.use(multer({storage}).single('photo'));
+app.use('/images',express.static(path.join(rootDir,'images')));
+app.use('/host/images',express.static(path.join(rootDir,'images')));
+app.use('/homes/images',express.static(path.join(rootDir,'images')));
 
 app.use(storeRouter);
 app.use(authRouter);

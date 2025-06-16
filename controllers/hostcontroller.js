@@ -43,8 +43,14 @@ const getHostHomes = (req,res,next)=>{
     );
 }
 const postaddHome=(req,res,next)=>{ 
-    const {houseName,pricePerNight,location,rating,photo,description}=req.body;
+    const {houseName,pricePerNight,location,rating,description}=req.body;
     console.log(req.body);
+    console.log(req.file);
+    if(!req.file){
+        return res.status(422).send("No image provided");
+        
+    }
+    const photo = req.file.path;
     const home =new Home({
         houseName,
         location,
@@ -59,7 +65,7 @@ const postaddHome=(req,res,next)=>{
     res.render('host/homeAdded',{pageTitle:'Home Added' , currentPage: 'postaddHome',isLoggedIn:req.isLoggedIn,user:req.session.user});
 }
 const postEditHome=(req,res,next)=>{ 
-    const {houseName,pricePerNight,location,rating,photo,description,id}=req.body;
+    const {houseName,pricePerNight,location,rating,description,id}=req.body;
     Home.findById(id).then(home =>{
         if(!home){
             console.log("Home not found for editing");
@@ -69,8 +75,12 @@ const postEditHome=(req,res,next)=>{
         home.location = location;
         home.pricePerNight = pricePerNight;
         home.rating = rating;
-        home.photo = photo;
         home.description = description;
+
+        if(req.file){
+            home.photo = req.file.path;
+        }
+
     home.save().then((result)=>{
         console.log(result);
     }).catch(err=>{
